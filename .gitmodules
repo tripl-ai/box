@@ -1,0 +1,3 @@
+[submodule "tpch"]
+	path = tpch
+	url = https://github.com/tripl-ai/tpch.git
