@@ -1,6 +1,6 @@
 # box
 
-This is an _experimental_ repository to perform a proof of concept of replacing the [Apache Spark](https://spark.apache.org/) executor for [Arc](https://arc.tripl.ai) with [Apache DataFusion](https://arrow.apache.org/datafusion/).
+This is an _experimental_ repository to perform a proof of concept replacement of the [Apache Spark](https://spark.apache.org/) executor for [Arc](https://arc.tripl.ai) with [Apache DataFusion](https://arrow.apache.org/datafusion/).
 
 This is a very simple proof-of-concept which, with community collaboration, could easily form the basis of much more efficient Arc execution. If you can see value in this approach and would like to get involved please raise an issue. If sufficient demand is reached we can set up a more formal discussion forum.
 
