@@ -24,10 +24,14 @@ You will need to have Rust installed (see [rustup](https://rustup.rs/)) and then
 rustup toolchain install nightly
 ```
 
+after the initial Rust install. The nightly version is currently required for the simd support. Some packages may need to be install to compile such as `cmake` but if you check the build output it should indicate any missing packages.
+
+Please note that if running on WSL or Windows you may need to convert the line endings to Unix format (LF) in order to run the script. When checking out the code they may be automatically changed to Windows line endings (CRLF) depending on your config.
 
 ### Notebook
 
 To execute the notebook functionality execute the provided `./notebook.sh` file. The `box.ipynb` file is a demonstration and is intended to show the basic notebook functionality.  You will need Docker installed (see [Docker](https://www.docker.com/)).
+
 
 ## Licenses
 
