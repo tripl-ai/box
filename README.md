@@ -16,11 +16,18 @@ git clone --recurse-submodules https://github.com/tripl-ai/box.git
 
 ### Command Line
 
-To execute a job via the command line execute the provided `./box.sh` file. You will need to have Rust installed (see [rustup](https://rustup.rs/)). This will execute `job.json` and is intended to show the basic functionality.
+To execute a job via the command line you can use the the provided `./box.sh` file which will execute `job.json` and is intended to show the basic functionality. 
+
+You will need to have Rust installed (see [rustup](https://rustup.rs/)) and then add the `nightly` channel: 
+
+```bash
+rustup toolchain install nightly
+```
+
 
 ### Notebook
 
-To execute the notebook functionality execute the provided `./notebook.sh` file. You will not need Docker installed (see [Docker](https://www.docker.com/)). The `box.ipynb` file is a demonstration and is intended to show the basic notebook functionality.
+To execute the notebook functionality execute the provided `./notebook.sh` file. The `box.ipynb` file is a demonstration and is intended to show the basic notebook functionality.  You will need Docker installed (see [Docker](https://www.docker.com/)).
 
 ## Licenses
 
