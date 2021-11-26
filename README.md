@@ -26,7 +26,13 @@ rustup toolchain install nightly
 
 after the initial Rust install. The nightly version is currently required for the simd support. Some packages may need to be install to compile such as `cmake` but if you check the build output it should indicate any missing packages.
 
-Please note that if running on WSL or Windows you may need to convert the line endings to Unix format (LF) in order to run the script. When checking out the code they may be automatically changed to Windows line endings (CRLF) depending on your config.
+Please note that if running on WSL or Windows you may need to convert the line endings to Unix format (LF) in order to run the script. When checking out the code they may be automatically changed to Windows line endings (CRLF) depending on your config. If you would like to git to not convert CRLF line endings then you can set core.autocrlf to false:
+
+```bash
+ git config --global core.autocrlf false
+```
+
+See [Customizing Git](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration) for more information.
 
 ### Notebook
 
