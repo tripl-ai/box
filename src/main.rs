@@ -18,8 +18,10 @@ use std::path::Path;
 use std::sync::Arc;
 
 use datafusion::prelude::*;
-use datafusion_objectstore_s3::object_store::aws::AmazonS3FileSystem;
 use structopt::StructOpt;
+
+#[cfg(feature = "s3")]
+use datafusion_objectstore_s3::object_store::aws::AmazonS3FileSystem;
 
 use regex::Regex;
 
@@ -101,6 +103,8 @@ async fn execute(opt: ExecuteOpt) -> Result<()> {
 
     let execution_config = ExecutionConfig::new().with_batch_size(32768);
     let mut execution_ctx = ExecutionContext::with_config(execution_config);
+
+    #[cfg(feature = "s3")]
     execution_ctx.register_object_store(
         "s3",
         Arc::new(AmazonS3FileSystem::new(None, None, None, None, None, None).await),
