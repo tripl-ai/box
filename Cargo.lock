@@ -738,8 +738,9 @@ dependencies = [
 [[package]]
 name = "datafusion-objectstore-s3"
 version = "0.1.0"
-source = "git+https://github.com/seddonm1/datafusion-objectstore-s3#ac31778b48b1e577f80f2ec5a3222c6a41769910"
+source = "git+https://github.com/datafusion-contrib/datafusion-objectstore-s3#366bb6cf51518bc1e3f71ba73f0aff13d6415711"
 dependencies = [
+ "arrow",
  "async-trait",
  "aws-config",
  "aws-sdk-s3",
