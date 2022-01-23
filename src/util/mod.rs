@@ -52,7 +52,7 @@ pub fn create_html_table(
                         for col in 0..batch.num_columns() {
                             let column = batch.column(col);
                             html.push_str(
-                                format!("<td>{}</td>", &array_value_to_string(&column, row)?)
+                                format!("<td>{}</td>", &array_value_to_string(column, row)?)
                                     .as_str(),
                             );
                         }

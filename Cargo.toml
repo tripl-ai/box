@@ -2,7 +2,7 @@
 name = "box"
 version = "0.1.0"
 authors = ["Mike Seddon"]
-edition = "2018"
+edition = "2021"
 
 [features]
 default = ["vendored-zmq"]
@@ -12,22 +12,25 @@ vendored-zmq = ["zmq/vendored"]
 
 [dependencies]
 async-trait = "0.1.41"
-datafusion = "6"
-futures = "0.3"
-lazy_static = "1.4"
+chrono = "0.4"
+datafusion = "6.0.0"
+datafusion-objectstore-s3 = { git = "https://github.com/seddonm1/datafusion-objectstore-s3" }
+dirs = "4.0.0"
+futures = "0.3.19"
+generic-array = "0.14.5"
+hex = "0.4"
+hmac = "0.12.0"
+http = "0.2.6"
+json = "0.12"
+lazy_static = "1.4.0"
+num_cpus = "1.0"
 regex = "1.4"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+sha2 = "0.10.1"
 snmalloc-rs = {version = "0.2", optional = true, features= ["cache-friendly"] }
 structopt = { version = "0.3", default-features = false }
 tokio = { version = "1.0", features = ["macros", "rt", "rt-multi-thread", "sync"] }
-num_cpus = "1.0"
-zmq = { version = "0.9", default-features = false }
-uuid = { version = "0.8", features = [ "v4" ] }
-hmac = "0.10"
-sha2 = "0.9"
-hex = "0.4"
-dirs = "3"
-chrono = "0.4"
 unicode-segmentation = "1.7"
-json = "0.12"
+uuid = { version = "0.8", features = [ "v4" ] }
+zmq = { version = "0.9", default-features = false }

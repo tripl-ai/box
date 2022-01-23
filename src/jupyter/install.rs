@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use crate::util::*;
-use dirs;
 use std::path::PathBuf;
 use std::{env, fs};
 

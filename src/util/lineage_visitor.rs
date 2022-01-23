@@ -21,15 +21,12 @@ impl PlanVisitor for LineageVisitor {
     type Error = fmt::Error;
 
     fn pre_visit(&mut self, plan: &LogicalPlan) -> std::result::Result<bool, fmt::Error> {
-        match plan {
-            LogicalPlan::TableScan { table_name, .. } => {
-                let _ = &self.table_scan.push(table_name.to_owned());
+        if let LogicalPlan::TableScan { table_name, .. } = plan {
+            let _ = &self.table_scan.push(table_name.to_owned());
 
-                if self.print {
-                    println!("{:?}", table_name);
-                }
+            if self.print {
+                println!("{:?}", table_name);
             }
-            _ => {}
         }
         Ok(true)
     }

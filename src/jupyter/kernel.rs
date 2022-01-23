@@ -168,7 +168,7 @@ impl Server {
                     "execution_count" => execution_count,
                     "code" => src
                 })
-                .send(&mut *self.iopub.lock().unwrap())?;
+                .send(&*self.iopub.lock().unwrap())?;
 
             // replace
             let src = variables::replace_hocon_parameters(src);
@@ -193,7 +193,7 @@ impl Server {
                                     "data" => data,
                                     "metadata" => object!(),
                                 })
-                                .send(&mut *self.iopub.lock().unwrap())?;
+                                .send(&*self.iopub.lock().unwrap())?;
 
                             execution_response_sender.send(message.new_reply().with_content(
                                 object! {
@@ -212,7 +212,7 @@ impl Server {
                                         e.to_string()
                                     ],
                                 })
-                                .send(&mut *self.iopub.lock().unwrap())?;
+                                .send(&*self.iopub.lock().unwrap())?;
                             execution_response_sender.send(message.new_reply().with_content(
                                 object! {
                                     "status" => "error",
@@ -232,7 +232,7 @@ impl Server {
                                 e.to_string()
                             ],
                         })
-                        .send(&mut *self.iopub.lock().unwrap())?;
+                        .send(&*self.iopub.lock().unwrap())?;
                     execution_response_sender.send(message.new_reply().with_content(object! {
                         "status" => "error",
                         "execution_count" => execution_count
@@ -272,7 +272,7 @@ impl Server {
         message
             .new_message("status")
             .with_content(object! {"execution_state" => "busy"})
-            .send(&mut *self.iopub.lock().unwrap())?;
+            .send(&*self.iopub.lock().unwrap())?;
 
         let idle = message
             .new_message("status")
@@ -282,17 +282,18 @@ impl Server {
             message
                 .new_reply()
                 .with_content(kernel_info())
-                .send(&connection)?;
+                .send(connection)?;
         } else if message.message_type() == "is_complete_request" {
             message
                 .new_reply()
                 .with_content(object! {"status" => "complete"})
-                .send(&connection)?;
+                .send(connection)?;
         } else if message.message_type() == "execute_request" {
             execution_sender.send(message)?;
-            execution_response_receiver.recv()?.send(&connection)?;
-        } else if message.message_type() == "comm_msg" {
-        } else if message.message_type() == "comm_info_request" {
+            execution_response_receiver.recv()?.send(connection)?;
+        } else if message.message_type() == "comm_msg"
+            || message.message_type() == "comm_info_request"
+        {
             // We don't handle this yet.
             // } else if message.message_type() == "complete_request" {
             //     let reply = message.new_reply().with_content(
@@ -312,17 +313,17 @@ impl Server {
                 message.message_type()
             );
         }
-        idle.send(&mut *self.iopub.lock().unwrap())?;
+        idle.send(&*self.iopub.lock().unwrap())?;
         Ok(())
     }
 
-    fn handle_control(self, mut connection: Connection) -> Result<()> {
+    fn handle_control(self, connection: Connection) -> Result<()> {
         loop {
-            let message = JupyterMessage::read(&mut connection, self.debug)?;
+            let message = JupyterMessage::read(&connection, self.debug)?;
             match message.message_type() {
                 "shutdown_request" => self.signal_shutdown(),
                 "interrupt_request" => {
-                    message.new_reply().send(&mut connection)?;
+                    message.new_reply().send(&connection)?;
                     eprintln!(
                         "Rust doesn't support interrupting execution. Perhaps restart kernel?"
                     );
@@ -348,7 +349,7 @@ fn bind_socket(
         connection_file.transport, connection_file.ip, port
     );
     socket.bind(&endpoint)?;
-    Ok(Connection::new(socket, &connection_file.key)?)
+    Connection::new(socket, &connection_file.key)
 }
 
 /// See [Kernel info documentation](https://jupyter-client.readthedocs.io/en/stable/messaging.html#kernel-info)

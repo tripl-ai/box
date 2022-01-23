@@ -16,7 +16,7 @@ use crate::jupyter::connection::{Connection, HmacSha256};
 use crate::util::*;
 
 use chrono::Utc;
-use hex;
+use generic_array::GenericArray;
 use json::{self, object, JsonValue};
 use std::{self, fmt};
 use uuid::Uuid;
@@ -54,7 +54,7 @@ impl RawMessage {
             let mut mac = mac_template.clone();
             raw_message.digest(&mut mac);
             use hmac::Mac;
-            if let Err(error) = mac.verify(&hex::decode(&hmac)?) {
+            if let Err(error) = mac.verify(GenericArray::from_slice(&hex::decode(&hmac)?)) {
                 return Err(BoxError::new(format!("{}", error)));
             }
         }
@@ -87,7 +87,7 @@ impl RawMessage {
     fn digest(&self, mac: &mut HmacSha256) {
         use hmac::Mac;
         for part in &self.jparts {
-            mac.update(&part);
+            mac.update(part);
         }
     }
 }

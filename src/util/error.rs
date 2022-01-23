@@ -11,7 +11,7 @@ pub type Result<T> = result::Result<T, BoxError>;
 
 /// BoxError error
 #[derive(Debug)]
-#[allow(missing_docs)]
+#[allow(missing_docs, clippy::enum_variant_names)]
 pub enum BoxError {
     ///
     BoxError(String),

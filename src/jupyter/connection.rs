@@ -14,9 +14,8 @@
 
 use crate::util::*;
 
-use hmac::{Hmac, NewMac};
+use hmac::{Hmac, Mac};
 use sha2::Sha256;
-use zmq;
 
 pub(crate) type HmacSha256 = Hmac<Sha256>;
 
@@ -31,7 +30,7 @@ impl Connection {
         let mac = if key.is_empty() {
             None
         } else {
-            Some(HmacSha256::new_varkey(key.as_bytes()).expect("Shouldn't fail with HMAC"))
+            Some(HmacSha256::new_from_slice(key.as_bytes()).expect("Shouldn't fail with HMAC"))
         };
         Ok(Connection { socket, mac })
     }

@@ -56,12 +56,7 @@ pub fn parse_config(
 ) -> Result<Vec<Box<dyn PipelineStage>>> {
     // prepare params
     let mut params = box_ctx.environment_variables.clone();
-    params.extend(
-        box_ctx
-            .commandline_arguments
-            .clone()
-            .unwrap_or(HashMap::new()),
-    );
+    params.extend(box_ctx.commandline_arguments.unwrap_or_else(HashMap::new));
 
     // Parse the string of data into serde_json::Value.
     let v = serde_json::from_str(config)?;

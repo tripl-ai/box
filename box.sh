@@ -1,4 +1,4 @@
-cargo +nightly run \
+cargo +nightly-2021-10-23 run \
 --release \
 --features "simd snmalloc" \
 --bin box \

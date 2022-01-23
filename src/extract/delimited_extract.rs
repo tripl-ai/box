@@ -3,8 +3,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use datafusion::{
-    datasource::file_format::csv::CsvFormat, datasource::listing::*,
-    datasource::object_store::local::LocalFileSystem, datasource::MemTable,
+    datasource::file_format::csv::CsvFormat, datasource::listing::*, datasource::MemTable,
     datasource::TableProvider, execution::context::ExecutionContext, prelude::*,
 };
 use serde::{Deserialize, Serialize};
@@ -87,13 +86,15 @@ impl PipelineStage for DelimitedExtract {
             table_partition_cols: vec![],
         };
 
+        let (object_store, _) = ctx.object_store(&self.input_uri)?;
+
         let resolved_schema = listing_options
-            .infer_schema(Arc::new(LocalFileSystem {}), &self.input_uri)
+            .infer_schema(object_store.clone(), &self.input_uri)
             .await
             .map_err(BoxError::from)?;
 
         let mut table_provider: Arc<dyn TableProvider + Send + Sync> = Arc::new(ListingTable::new(
-            Arc::new(LocalFileSystem {}),
+            object_store,
             self.input_uri.clone(),
             resolved_schema,
             listing_options,
@@ -106,7 +107,7 @@ impl PipelineStage for DelimitedExtract {
         let input_partitions = Some(exec.output_partitioning().partition_count());
         self.statistics = Statistics::new(
             exec.statistics(),
-            Some(Partitions::new(input_partitions.clone(), None)),
+            Some(Partitions::new(input_partitions, None)),
         );
 
         let output_partitions = if self.persist {

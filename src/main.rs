@@ -15,8 +15,10 @@ use util::*;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
+use std::sync::Arc;
 
 use datafusion::prelude::*;
+use datafusion_objectstore_s3::object_store::aws::AmazonS3FileSystem;
 use structopt::StructOpt;
 
 use regex::Regex;
@@ -99,6 +101,11 @@ async fn execute(opt: ExecuteOpt) -> Result<()> {
 
     let execution_config = ExecutionConfig::new().with_batch_size(32768);
     let mut execution_ctx = ExecutionContext::with_config(execution_config);
+    execution_ctx.register_object_store(
+        "s3",
+        Arc::new(AmazonS3FileSystem::new(None, None, None, None, None, None).await),
+    );
+
     let config = fs::read_to_string(Path::new(&box_ctx.clone().job_path.unwrap()))
         .map_err(BoxError::from)?;
 
@@ -107,9 +114,8 @@ async fn execute(opt: ExecuteOpt) -> Result<()> {
 
     let stages = api::parse_config(box_ctx.clone(), config.as_str(), true, false)?;
 
-    match api::execute(box_ctx, &mut execution_ctx, stages, true).await {
-        Ok(result) => print_batches(result.unwrap().collect().await.unwrap().as_ref()).unwrap(),
-        _ => {}
+    if let Ok(result) = api::execute(box_ctx, &mut execution_ctx, stages, true).await {
+        print_batches(result.unwrap().collect().await.unwrap().as_ref()).unwrap()
     }
 
     Ok(())
