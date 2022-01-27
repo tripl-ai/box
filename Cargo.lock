@@ -738,7 +738,7 @@ dependencies = [
 [[package]]
 name = "datafusion-objectstore-s3"
 version = "0.1.0"
-source = "git+https://github.com/datafusion-contrib/datafusion-objectstore-s3#366bb6cf51518bc1e3f71ba73f0aff13d6415711"
+source = "git+https://github.com/datafusion-contrib/datafusion-objectstore-s3?rev=366bb6cf51518bc1e3f71ba73f0aff13d6415711#366bb6cf51518bc1e3f71ba73f0aff13d6415711"
 dependencies = [
  "arrow",
  "async-trait",

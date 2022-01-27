@@ -15,7 +15,6 @@ use util::*;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
-use std::sync::Arc;
 
 use datafusion::prelude::*;
 use structopt::StructOpt;
